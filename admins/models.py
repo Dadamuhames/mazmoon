@@ -80,43 +80,6 @@ class StaticInformation(models.Model):
         return 'Static information'
 
 
-
-# media images
-class ImageGalery(models.Model):
-    title = models.JSONField('Заголовок изображения', blank=True, null=True)
-
-    def __str__(self):
-        return 'Image' + str(self.id)
-    
-    class Meta:
-        verbose_name = 'img_gal'
-
-
-# image gallery images
-class ImageGalleryFiles(models.Model):
-    gallery = models.ForeignKey(ImageGalery, on_delete=models.CASCADE)
-    image = ThumbnailerImageField('Изображение', upload_to='image_gallery')
-
-
-
-# media videos
-class VideoGalery(models.Model):
-    title = models.JSONField('Заголовок видео', blank=True, null=True)
-
-    def __str__(self):
-        return 'Video' + str(self.id)
-
-    class Meta:
-        verbose_name = 'vid_gal'
-
-
-# video gallery videos 
-class VideoGalleryVideos(models.Model):
-    gallery = models.ForeignKey(VideoGalery, on_delete=models.CASCADE)
-    video = models.FileField('Видео', upload_to='videos_gallery', null=True, validators=[FileExtensionValidator(allowed_extensions=['MOV', 'avi', 'mp4', 'webm', 'mkv'])])
-
-
-
 # article categories
 class ArticleCategories(models.Model):
     name = models.JSONField('Заголовок', blank=True, null=True)
@@ -168,14 +131,6 @@ def article_delete_image(sender, instance, *args, **kwargs):
         pass
 
 
-
-# article images
-class ArticleImages(models.Model):
-    article = models.ForeignKey(Articles, on_delete=models.CASCADE, related_name='images')
-    image = ThumbnailerImageField(upload_to='article_images')
-
-    class Meta:
-        verbose_name = 'art_images'
 
 
 

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, FormView
 from .models import Articles, Languages, Translations, TranlsationGroups, StaticInformation, ArticleCategories, Services
-from .models import ImageGalery, VideoGalery, AboutUs, MetaTags, telephone_validator, Reviews, Partners
+from .models import AboutUs, MetaTags, telephone_validator, Reviews, Partners
 from main.models import ShortApplication
 from .forms import LngForm, UserForm  # , ApplicationForm
 from django.core.exceptions import ValidationError
