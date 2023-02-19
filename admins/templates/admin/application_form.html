@@ -1,0 +1,244 @@
+{% extends 'admin/base_template.html' %}
+{% load static %}
+{% load get_item %}
+{% load str %}
+
+
+{% block title %} Заявки {% endblock %}
+
+
+{% block page_title %} Заявки {% endblock %}
+
+{% block nav_ol %}
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Главная</a></li>
+    <li class="breadcrumb-item ">
+        <a href="{% url 'appl_list' %}">Заявки</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="&quot;page&quot;">
+        Редактирование
+    </li>
+</ol>
+{% endblock %}
+
+{% block content_width %} class="col-12" {% endblock %}
+
+
+{% block content %}
+<form class="row" action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="car_year" value="{{ object.car_year }}">
+    <input type="hidden" name="url" value="{{ request.get_full_path }}">
+    <div class="col-12 col-xl-8">
+        <div class="card mt-3">
+            <div class="card-body p-5 pt-4">
+                <div class="tab-content" id="myTabContent">
+                    <div class="form-group">
+                        <label class="form-label required">
+                            Имя
+                        </label>
+                        <br>
+                        <input type="text" name="first_name" class="form-control" value="{{ object.first_name }}"
+                            required>
+                        <div class="invalid-feedback" style="display: block;">{{ form.errors.first_name }}</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">
+                            Фамилия
+                        </label>
+                        <br>
+                        <input type="text" name="last_name" class="form-control" value="{{ object.last_name }}"
+                            required>
+                        <div class="invalid-feedback" style="display: block;">{{ form.errors.last_name }}</div>
+                    </div>
+                    <div class="form-group">
+                        <!-- Label  -->
+                        <label class="form-label required">
+                            Точка A
+                        </label>
+                        <br>
+                        <!-- Input -->
+                        <select class="form-select mb-3" name="ship_from" data-choices required>
+                            <option value="">-----</option>
+                            {% for city in cities %}
+                            {% if object and object.ship_from == city %}
+                            <option value="{{ city.id }}" selected>{{ city.name|get_item:lang.code }} {{ city.state.code }} {{ city.zip }}</option>
+                            {% else %}
+                            <option value="{{ city.id }}">{{ city.name|get_item:lang.code }} {{ city.state.code }} {{ city.zip }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <!-- Label  -->
+                        <label class="form-label required">
+                            Точка B
+                        </label>
+                        <br>
+                        <!-- Input -->
+                        <select class="form-select mb-3" name="ship_to" data-choices required>
+                            <option value="">-----</option>
+                            {% for city in cities %}
+                            {% if object and object.ship_to == city %}
+                            <option value="{{ city.id }}" selected>{{ city.name|get_item:lang.code }} {{ city.state.code }} {{ city.zip }} </option>
+                            {% else %}
+                            <option value="{{ city.id }}">{{ city.name|get_item:lang.code }} {{ city.state.code }} {{ city.zip }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">
+                            Адрес доставки
+                        </label>
+                        <br>
+                        <input type="text" name="adres" class="form-control" value="{{ object.adres }}" required>
+                        <div class="invalid-feedback" style="display: block;">{{ form.errors.adres }}</div>
+                    </div>
+                    <div class="form-group">
+                        <!-- Label  -->
+                        <label class="form-label required">
+                            Транспорт
+                        </label>
+                        <br>
+                        <!-- Input -->
+                        {{ form.vehicle }}
+                        <div class="invalid-feedback" style="display: block;">{{ form.errors.vehicle }}</div>
+                    </div>
+                    <!-- Project name -->
+                    <div class="form-group">
+                        <!-- Label  -->
+                        <label class="form- required">
+                            Тариф
+                        </label>
+                        <br>
+                        <!-- Input -->
+                        {{ form.tarif }}
+                        {% if lang.default %}
+                        <div class="invalid-feedback" style="display: block;">
+                            {{ form.tarif.error }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <!-- Label  -->
+                        <label class="form-label required">
+                            Тип доставки
+                        </label>
+                        <br>
+                        <!-- Input -->
+                        {{ form.ship_type }}
+                        <div class="invalid-feedback" style="display: block;">{{ form.errors.ship_type }}</div>
+                    </div>
+                    <div class="form-group">
+                        <!-- Label -->
+                        <label class="form-label mb-1 required">
+                            Email
+                        </label>
+                        <br>
+                        <!-- Textarea -->
+                        {{ form.email }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-xl-4">
+        <div class="card mt-3">
+            <div class="card-body p-4">
+                <div class="form-group">
+                    <!-- Label  -->
+                    <label class="form-label">
+                        Дата
+                    </label>
+                    <br>
+                    <!-- Input -->
+                    <input type="text" name="date" value="{{ object.get_format_data }}" class="form-control" id="date-input" data-flatpickr='{"dateFormat": "Y-m-d"}'>
+                </div>
+                <div class="form-group">
+                    <!-- Label  -->
+                    <label class="form-label required">
+                        Статус
+                    </label>
+                    <br>
+                    <!-- Input -->
+                    {{ form.status }}
+                    <div class="invalid-feedback" style="display: block;">
+                        {{ form.errors.status }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <!-- Label  -->
+                    <label class="form-label required">
+                        Vehicle runs
+                    </label>
+                    <br>
+                    <!-- Input -->
+                    {{ form.vehicle_runs }}
+                    <div class="invalid-feedback" style="display: block;">
+                        {{ form.errors.vehicle_runs }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <!-- Label  -->
+                    <label class="form-label required">
+                        Доставка
+                    </label>
+                    <br>
+                    <!-- Input -->
+                    {{ form.ship_via_id }}
+                    <div class="invalid-feedback" style="display: block;">
+                        {{ form.errors.ship_via_id }}
+                    </div>
+                </div>
+                <div class="btn-box text-end">
+                    <a href="{{ request.get_full_path }}" class="btn btn-secondary">
+                        Отменить
+                    </a>
+                    <button type="submit" class="btn w-60 btn-primary">
+                        Сохранить
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- Form -->
+
+
+
+<!-- JAVASCRIPT -->
+<script>
+    for (let txt of document.querySelectorAll('.editor')) {
+        CKEDITOR.replace(txt)
+    }
+</script>
+
+<!-- Map JS -->
+
+<!-- Vendor JS -->
+{% endblock %}
+
+
+
+<!--
+    
+    
+                <div class="form-group">
+                   
+                    <label class="form-label">
+                        Цена
+                    </label>
+                    <br>
+                    <input type="number" class="form-control" value="{{ object.price }}">
+                </div>
+    
+                <div class="form-group">
+                    <label class="form-label">
+                        Дистанция
+                    </label>
+                    <br>
+                    <input type="number" class="form-control" value="{{ object.distance }}">
+                </div>
+-->
