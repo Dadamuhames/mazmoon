@@ -5,6 +5,7 @@ from easy_thumbnails.fields import ThumbnailerImageField
 # category
 class Category(models.Model):
     name = models.JSONField('Name', blank=True, null=True)
+    subtitle = models.JSONField('Subtitle', blank=True, null=True)
     deckription = models.JSONField("Deckription", blank=True, null=True)
     icon = ThumbnailerImageField(upload_to='ctg_icons', blank=True, null=True)
     image = ThumbnailerImageField(upload_to='ctg_image', blank=True, null=True)
@@ -37,5 +38,5 @@ class ShortApplication(models.Model):
     type = models.CharField('Type', max_length=255, choices=TYPES)
     budget = models.CharField('Budget', max_length=255, choices=BUGET)
     project_idea = models.TextField('Idea', blank=True, null=True)
-    know_about_you = models.TextField()
+    know_about_you = models.TextField('About you', blank=True, null=True)
      
